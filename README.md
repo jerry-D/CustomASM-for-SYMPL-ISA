@@ -34,7 +34,9 @@ In the meantime, I will attempt to contact the author of CustomASM and see if I 
 For more information on the SYMPL Universal Floating-Point ISA, refer to the following documents:
 
 https://github.com/jerry-D/SYMPL_IEEE754-2019_ISA/blob/main/UFP_ISA.pdf
+
 https://github.com/jerry-D/HedgeHog-Fused-Spiking-Neural-Network-Emulator-Compute-Engine/blob/master/HedgeHog.pdf
+
 https://github.com/jerry-D/64-bit-Universal-Floating-Point-ISA-Compute-Engine/blob/master/SYMPL_neuron16c.pdf
 
 
