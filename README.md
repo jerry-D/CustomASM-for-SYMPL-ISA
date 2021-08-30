@@ -30,6 +30,11 @@ EXAMPLE SYMPL ISA Syntax Adapted for use with CustomASM
 
        _     _1|LEDreg <- _1|buttons                 ;capture buttons and write them to LEDs
 ```
+Also included in this repository are a version of the Rules table and demo source file that uses the original SYMPL ISA ":" and "=" characters in the syntax in the event that the author of CustomASM decides to update his assembler to support them.  The files are:
+```
+SYMPLrules_colon.tbl
+SYMPL_demo1_BT_colon.asm
+```
 In the meantime, I will attempt to contact the author of CustomASM and see if I can convince him to permit use of ":" and "=" in the user ISA syntax.
 For more information on the SYMPL Universal Floating-Point ISA, refer to the following documents:
 
