@@ -1,4 +1,4 @@
-# CustomASM Support for SYMPL Universal Floating-Point ISA
+## CustomASM Support for SYMPL Universal Floating-Point ISA
 SYMPL ISA Rule table for open-source CustomASM cross-assembler.
 
 (August 30, 2021) This repository contains a Rule table that can be used with the open-source CustomASM rule-based cross-assembler to assemble SYMPL ISA assembly language source files whose binary output can be uploaded to the ULX3S FPGA board.  Also available at this repository is a version of the Blue Tooth version of the SYMPL IEEE 754-2019 demo that has been modified to conform to the current CustomASM syntax.  The source and assembled files are:
