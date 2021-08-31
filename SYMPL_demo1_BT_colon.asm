@@ -235,7 +235,7 @@ clrLPCNT:    _
        _     _4:PC = _4:*SP++[4]                 ;restore PC (return)
 
 sendTekMsg:  _
-       _     _4:*SP--[4] = _4|PC_COPY            ;save return address
+       _     _4:*SP--[4] = _4:PC_COPY            ;save return address
               
        _     _4:AR0 = _4:#{tekPlotMode | 0x80000000}   ;switch to Tektronix mode    
        _     _4:PCC = (_1:0, 0, sendMessage) 
