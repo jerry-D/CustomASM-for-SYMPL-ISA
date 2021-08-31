@@ -6,8 +6,10 @@
 ;This assembler source is written for use with the open-source CustomASM cross-assembler
 ;Open-Source CustomASM rules-based cross-assembler is available for free download at:
 ;     github.com/hlorenzi/customasm
+
+;(this version uses ":" and "=" in the ISA syntax
                   
-#include "SYMPLrules.tbl"
+#include "SYMPLrules_colon.tbl"
             
 timer            =  0x7FEC   ;32-bit timer current count value read-only --always cleared to 0 when timerCmpr is written to
 timerCmpr        =  0x7FEC   ;32-bit timer compare register (at same address) write-only
@@ -46,241 +48,241 @@ prog_len:         #d64 progend    ;the present convention is location 0x00001 is
 #addr             0x0100
 
 
-start:  _    _4|timerCmpr <- _4|#0xFFFFFFFF
-        _    _4|SP <- _4|#0x1FE0                   ;allow for 256-bit push if need be
-        _    _1|clrDVCNZ <- _1|#DoneBit            ;clear the Done bit to enable timer
-        _    _2|artRxClkDiv <- _2|#108             ;set baud rate for 12.5MHz clock / 115200 baud = 109 rounded up, subtract 1 = 108  
-;        _    _1|artCntrl <- _1|#0x01              ;set serial format for 8 data bits, 1 stop bit, no parity
-        _    _1|artCntrl <- _1|#0x02               ;set serial format for 8 data bits, 2 stop bit, no parity
+start:  _    _4:timerCmpr = _4:#0xFFFFFFFF
+        _    _4:SP = _4:#0x1FE0                   ;allow for 256-bit push if need be
+        _    _1:clrDVCNZ = _1:#DoneBit            ;clear the Done bit to enable timer
+        _    _2:artRxClkDiv = _2:#108             ;set baud rate for 12.5MHz clock / 115200 baud = 109 rounded up, subtract 1 = 108  
+;        _    _1:artCntrl = _1:#0x01              ;set serial format for 8 data bits, 1 stop bit, no parity
+        _    _1:artCntrl = _1:#0x02               ;set serial format for 8 data bits, 2 stop bit, no parity
         
-        _    _4|AR0 <- _4|#{demoMenu | 0x80000000} ;point to demo menu
-        _    _4|PCC <- (_1|0, 0, sendMessage)      ;branch always to sendMessage subroutine
+        _    _4:AR0 = _4:#{demoMenu | 0x80000000} ;point to demo menu
+        _    _4:PCC = (_1:0, 0, sendMessage)      ;branch always to sendMessage subroutine
         _
-        _    _4|AR0 <- _4|#{tekPlotMode | 0x80000000}  ;pop up the Tek window to draw on     
-        _    _4|PCC <- (_1|0, 0, sendMessage)      
+        _    _4:AR0 = _4:#{tekPlotMode | 0x80000000}  ;pop up the Tek window to draw on     
+        _    _4:PCC = (_1:0, 0, sendMessage)      
         _
-        _    _4|AR0 <- _4|#{tekNorm | 0x80000000}  ;switch back to Normal (target) display buffer to put the cursor back in main window
-        _    _4|PCC <- (_1|0, 0, sendMessage)      ;branch always to sendMessage
+        _    _4:AR0 = _4:#{tekNorm | 0x80000000}  ;switch back to Normal (target) display buffer to put the cursor back in main window
+        _    _4:PCC = (_1:0, 0, sendMessage)      ;branch always to sendMessage
 
-        _    _4|prevPlot <- _4|#{line1 | 0x80000000}
+        _    _4:prevPlot = _4:#{line1 | 0x80000000}
         
         
 demoLoop:    _
         _
             
-        _    _4|PCC <- (_1|0,0, getChar)
+        _    _4:PCC = (_1:0,0, getChar)
         _
-        _    _4|AR0 <- _4|#{hiLiteOff | 0x80000000}
-        _    _4|PCC <- (_1|0, 0, sendMessage)      
-        _    _1|compare <- (_1|inChar, _1|#"1")
+        _    _4:AR0 = _4:#{hiLiteOff | 0x80000000}
+        _    _4:PCC = (_1:0, 0, sendMessage)      
+        _    _1:compare = (_1:inChar, _1:#"1")
         _
-        _    _4|PCS <- (_1|STATUS, Z, draw1)
-        _    _1|compare <- (_1|inChar, _1|#"2")
+        _    _4:PCS = (_1:STATUS, Z, draw1)
+        _    _1:compare = (_1:inChar, _1:#"2")
         _
-        _    _4|PCS <- (_1|STATUS, Z, draw2)
-        _    _1|compare <- (_1|inChar, _1|#"3")
+        _    _4:PCS = (_1:STATUS, Z, draw2)
+        _    _1:compare = (_1:inChar, _1:#"3")
         _
-        _    _4|PCS <- (_1|STATUS, Z, draw3)
-        _    _1|compare <- (_1|inChar, _1|#"4")
+        _    _4:PCS = (_1:STATUS, Z, draw3)
+        _    _1:compare = (_1:inChar, _1:#"4")
         _
-        _    _4|PCS <- (_1|STATUS, Z, draw4)
-        _    _1|compare <- (_1|inChar, _1|#"5")
+        _    _4:PCS = (_1:STATUS, Z, draw4)
+        _    _1:compare = (_1:inChar, _1:#"5")
         _
-        _    _4|PCS <- (_1|STATUS, Z, draw5)
-        _    _1|compare <- (_1|inChar, _1|#"6")
+        _    _4:PCS = (_1:STATUS, Z, draw5)
+        _    _1:compare = (_1:inChar, _1:#"6")
         _
-        _    _4|PCS <- (_1|STATUS, Z, draw6)
-        _    _1|compare <- (_1|inChar, _1|#"7")
+        _    _4:PCS = (_1:STATUS, Z, draw6)
+        _    _1:compare = (_1:inChar, _1:#"7")
         _
-        _    _4|PCS <- (_1|STATUS, Z, draw7)                                             
-        _    _1|compare <- (_1|inChar, _1|#"8")                                          
+        _    _4:PCS = (_1:STATUS, Z, draw7)                                             
+        _    _1:compare = (_1:inChar, _1:#"8")                                          
         _
-        _    _4|PCS <- (_1|STATUS, Z, draw8)
-        _    _4|PCC <- (_1|0, 0, demoLoop)
+        _    _4:PCS = (_1:STATUS, Z, draw8)
+        _    _4:PCC = (_1:0, 0, demoLoop)
         _
                                
         
-draw1:  _    _4|AR0 <- _4|prevPlot 
-        _    _4|PCC <- (_1|0, 0, sendMessage)  
+draw1:  _    _4:AR0 = _4:prevPlot 
+        _    _4:PCC = (_1:0, 0, sendMessage)  
 
-        _    _4|prevPlot <- _4|#{line1 | 0x80000000}
-        _    _4|AR0 <- _4|#{hiLiteOn | 0x80000000}
-        _    _4|PCC <- (_1|0, 0, sendMessage)      
+        _    _4:prevPlot = _4:#{line1 | 0x80000000}
+        _    _4:AR0 = _4:#{hiLiteOn | 0x80000000}
+        _    _4:PCC = (_1:0, 0, sendMessage)      
         _
-        _    _4|AR0 <- _4|#{line1 | 0x80000000}
-        _    _4|PCC <- (_1|0, 0, sendMessage)      
+        _    _4:AR0 = _4:#{line1 | 0x80000000}
+        _    _4:PCC = (_1:0, 0, sendMessage)      
         _
-        _    _4|AR6 <- _4|#{_01_barchart_plt | 0x80000000}  
-        _    _4|PCC <- (_1|0, 0, sendTekMsg)    
-        _    _4|PCC <- (_1|0, 0, demoLoop)
+        _    _4:AR6 = _4:#{_01_barchart_plt | 0x80000000}  
+        _    _4:PCC = (_1:0, 0, sendTekMsg)    
+        _    _4:PCC = (_1:0, 0, demoLoop)
         _      
-draw2:  _    _4|AR0 <- _4|prevPlot 
-        _    _4|PCC <- (_1|0, 0, sendMessage)  
+draw2:  _    _4:AR0 = _4:prevPlot 
+        _    _4:PCC = (_1:0, 0, sendMessage)  
         
-        _    _4|prevPlot <- _4|#{line2 | 0x80000000}
-        _    _4|AR0 <- _4|#{hiLiteOn | 0x80000000}
-        _    _4|PCC <- (_1|0, 0, sendMessage)      
+        _    _4:prevPlot = _4:#{line2 | 0x80000000}
+        _    _4:AR0 = _4:#{hiLiteOn | 0x80000000}
+        _    _4:PCC = (_1:0, 0, sendMessage)      
         _
-        _    _4|AR0 <- _4|#{line2 | 0x80000000}
-        _    _4|PCC <- (_1|0, 0, sendMessage)      
+        _    _4:AR0 = _4:#{line2 | 0x80000000}
+        _    _4:PCC = (_1:0, 0, sendMessage)      
         _
-        _    _4|AR6 <- _4|#{_09_wizard_plt | 0x80000000}
-        _    _4|PCC <- (_1|0, 0, sendTekMsg)    
-        _    _4|PCC <- (_1|0, 0, demoLoop)
+        _    _4:AR6 = _4:#{_09_wizard_plt | 0x80000000}
+        _    _4:PCC = (_1:0, 0, sendTekMsg)    
+        _    _4:PCC = (_1:0, 0, demoLoop)
         _      
-draw3:  _    _4|AR0 <- _4|prevPlot 
-        _    _4|PCC <- (_1|0, 0, sendMessage)  
+draw3:  _    _4:AR0 = _4:prevPlot 
+        _    _4:PCC = (_1:0, 0, sendMessage)  
         
-        _    _4|prevPlot <- _4|#{line3 | 0x80000000}
-        _    _4|AR0 <- _4|#{hiLiteOn | 0x80000000}
-        _    _4|PCC <- (_1|0, 0, sendMessage)      
+        _    _4:prevPlot = _4:#{line3 | 0x80000000}
+        _    _4:AR0 = _4:#{hiLiteOn | 0x80000000}
+        _    _4:PCC = (_1:0, 0, sendMessage)      
         _
-        _    _4|AR0 <- _4|#{line3 | 0x80000000}
-        _    _4|PCC <- (_1|0, 0, sendMessage)      
+        _    _4:AR0 = _4:#{line3 | 0x80000000}
+        _    _4:PCC = (_1:0, 0, sendMessage)      
         _
-        _    _4|AR6 <- _4|#{baz_plt | 0x80000000}       
-        _    _4|PCC <- (_1|0, 0, sendTekMsg)    
-        _    _4|PCC <- (_1|0, 0, demoLoop)
+        _    _4:AR6 = _4:#{baz_plt | 0x80000000}       
+        _    _4:PCC = (_1:0, 0, sendTekMsg)    
+        _    _4:PCC = (_1:0, 0, demoLoop)
         _      
-draw4:  _    _4|AR0 <- _4|prevPlot 
-        _    _4|PCC <- (_1|0, 0, sendMessage)  
+draw4:  _    _4:AR0 = _4:prevPlot 
+        _    _4:PCC = (_1:0, 0, sendMessage)  
         
-        _    _4|prevPlot <- _4|#{line4 | 0x80000000}
-        _    _4|AR0 <- _4|#{hiLiteOn | 0x80000000}
-        _    _4|PCC <- (_1|0, 0, sendMessage)      
+        _    _4:prevPlot = _4:#{line4 | 0x80000000}
+        _    _4:AR0 = _4:#{hiLiteOn | 0x80000000}
+        _    _4:PCC = (_1:0, 0, sendMessage)      
         _
-        _    _4|AR0 <- _4|#{line4 | 0x80000000}
-        _    _4|PCC <- (_1|0, 0, sendMessage)      
+        _    _4:AR0 = _4:#{line4 | 0x80000000}
+        _    _4:PCC = (_1:0, 0, sendMessage)      
         _
-        _    _4|AR6 <- _4|#{dmaker_plt | 0x80000000}      
-        _    _4|PCC <- (_1|0, 0, sendTekMsg)    
-        _    _4|PCC <- (_1|0, 0, demoLoop) 
+        _    _4:AR6 = _4:#{dmaker_plt | 0x80000000}      
+        _    _4:PCC = (_1:0, 0, sendTekMsg)    
+        _    _4:PCC = (_1:0, 0, demoLoop) 
         _     
-draw5:  _    _4|AR0 <- _4|prevPlot 
-        _    _4|PCC <- (_1|0, 0, sendMessage)  
+draw5:  _    _4:AR0 = _4:prevPlot 
+        _    _4:PCC = (_1:0, 0, sendMessage)  
         
-        _    _4|prevPlot <- _4|#{line5 | 0x80000000}
-        _    _4|AR0 <- _4|#{hiLiteOn | 0x80000000}
-        _    _4|PCC <- (_1|0, 0, sendMessage)      
+        _    _4:prevPlot = _4:#{line5 | 0x80000000}
+        _    _4:AR0 = _4:#{hiLiteOn | 0x80000000}
+        _    _4:PCC = (_1:0, 0, sendMessage)      
         _
-        _    _4|AR0 <- _4|#{line5 | 0x80000000}
-        _    _4|PCC <- (_1|0, 0, sendMessage)      
+        _    _4:AR0 = _4:#{line5 | 0x80000000}
+        _    _4:PCC = (_1:0, 0, sendMessage)      
         _
-        _    _4|AR6 <- _4|#{ocpred_tek | 0x80000000}      
-        _    _4|PCC <- (_1|0, 0, sendTekMsg)    
-        _    _4|PCC <- (_1|0, 0, demoLoop) 
+        _    _4:AR6 = _4:#{ocpred_tek | 0x80000000}      
+        _    _4:PCC = (_1:0, 0, sendTekMsg)    
+        _    _4:PCC = (_1:0, 0, demoLoop) 
         _     
-draw6:  _    _4|AR0 <- _4|prevPlot 
-        _    _4|PCC <- (_1|0, 0, sendMessage)  
+draw6:  _    _4:AR0 = _4:prevPlot 
+        _    _4:PCC = (_1:0, 0, sendMessage)  
         
-        _    _4|prevPlot <- _4|#{line6 | 0x80000000}
-        _    _4|AR0 <- _4|#{hiLiteOn | 0x80000000}
-        _    _4|PCC <- (_1|0, 0, sendMessage)      
+        _    _4:prevPlot = _4:#{line6 | 0x80000000}
+        _    _4:AR0 = _4:#{hiLiteOn | 0x80000000}
+        _    _4:PCC = (_1:0, 0, sendMessage)      
         _
-        _    _4|AR0 <- _4|#{line6 | 0x80000000}
-        _    _4|PCC <- (_1|0, 0, sendMessage)      
+        _    _4:AR0 = _4:#{line6 | 0x80000000}
+        _    _4:PCC = (_1:0, 0, sendMessage)      
         _
-        _    _4|AR6 <- _4|#{sixcharts_plt | 0x80000000}   
-        _    _4|PCC <- (_1|0, 0, sendTekMsg)    
-        _    _4|PCC <- (_1|0, 0, demoLoop)  
+        _    _4:AR6 = _4:#{sixcharts_plt | 0x80000000}   
+        _    _4:PCC = (_1:0, 0, sendTekMsg)    
+        _    _4:PCC = (_1:0, 0, demoLoop)  
         _    
-draw7:  _    _4|AR0 <- _4|prevPlot 
-        _    _4|PCC <- (_1|0, 0, sendMessage)  
+draw7:  _    _4:AR0 = _4:prevPlot 
+        _    _4:PCC = (_1:0, 0, sendMessage)  
         
-        _    _4|prevPlot <- _4|#{line7 | 0x80000000}
-        _    _4|AR0 <- _4|#{hiLiteOn | 0x80000000}
-        _    _4|PCC <- (_1|0, 0, sendMessage)      
+        _    _4:prevPlot = _4:#{line7 | 0x80000000}
+        _    _4:AR0 = _4:#{hiLiteOn | 0x80000000}
+        _    _4:PCC = (_1:0, 0, sendMessage)      
         _
-        _    _4|AR0 <- _4|#{line7 | 0x80000000}
-        _    _4|PCC <- (_1|0, 0, sendMessage)      
+        _    _4:AR0 = _4:#{line7 | 0x80000000}
+        _    _4:PCC = (_1:0, 0, sendMessage)      
         _
-        _    _4|AR6 <- _4|#{teklogo_plt | 0x80000000}     
-        _    _4|PCC <- (_1|0, 0, sendTekMsg)    
-        _    _4|PCC <- (_1|0, 0, demoLoop)
+        _    _4:AR6 = _4:#{teklogo_plt | 0x80000000}     
+        _    _4:PCC = (_1:0, 0, sendTekMsg)    
+        _    _4:PCC = (_1:0, 0, demoLoop)
         _      
-draw8:  _    _4|AR0 <- _4|prevPlot 
-        _    _4|PCC <- (_1|0, 0, sendMessage)  
+draw8:  _    _4:AR0 = _4:prevPlot 
+        _    _4:PCC = (_1:0, 0, sendMessage)  
         
-        _    _4|prevPlot <- _4|#{line8 | 0x80000000}
-        _    _4|AR0 <- _4|#{hiLiteOn | 0x80000000}
-        _    _4|PCC <- (_1|0, 0, sendMessage)      
+        _    _4:prevPlot = _4:#{line8 | 0x80000000}
+        _    _4:AR0 = _4:#{hiLiteOn | 0x80000000}
+        _    _4:PCC = (_1:0, 0, sendMessage)      
         _
-        _    _4|AR0 <- _4|#{line8 | 0x80000000}
-        _    _4|PCC <- (_1|0, 0, sendMessage)      
+        _    _4:AR0 = _4:#{line8 | 0x80000000}
+        _    _4:PCC = (_1:0, 0, sendMessage)      
         _
-        _    _4|AR6 <- _4|#{gsxbasic1_plt | 0x80000000}   
-        _    _4|PCC <- (_1|0, 0, sendTekMsg)    
-        _    _4|PCC <- (_1|0, 0, demoLoop)      
+        _    _4:AR6 = _4:#{gsxbasic1_plt | 0x80000000}   
+        _    _4:PCC = (_1:0, 0, sendTekMsg)    
+        _    _4:PCC = (_1:0, 0, demoLoop)      
                                
 
 sendMessage: _
-        _    _4|*SP--[4] <- _4|PC_COPY            ;save return address     
+        _    _4:*SP--[4] = _4:PC_COPY            ;save return address     
 
 sendLoop:    _
-        _    _4|AR1 <- _4|#outBuf                 ;load AR1 with pointer to first character postion of outBuf
-        _    s8|outBuf <- _8|*AR0++[1]            ;place 8 characters from program ROM into outBuf -- swap endianess
-        _    _2|LPCNT0 <- _2|#8                   ;each program ROM location contains 8 characters
+        _    _4:AR1 = _4:#outBuf                 ;load AR1 with pointer to first character postion of outBuf
+        _    s8:outBuf = _8:*AR0++[1]            ;place 8 characters from program ROM into outBuf -- swap endianess
+        _    _2:LPCNT0 = _2:#8                   ;each program ROM location contains 8 characters
 loopInner:   _
-        _    _1|compare <- (_1|*AR1[0], _1|#0x00) ;see if current char is a null character 
+        _    _1:compare = (_1:*AR1[0], _1:#0x00) ;see if current char is a null character 
         _
-        _    _1|cout <- _1|*AR1++[1]              ;copy first char in buffer to cout and increment to next character
-        _    _4|PCC <- (_1|STATUS, Z, sendChar)   ;if not null then send it
-        _    _4|PCS <- (_1|STATUS, Z, clrLPCNT)   ;else exit if null char
-        _    _4|PCS <- (_4|LPCNT0, 16, loopInner) ;next  
-        _    _4|PCC <- (_1|0, 0, sendLoop)        ;branch always to sendLoop 
+        _    _1:cout = _1:*AR1++[1]              ;copy first char in buffer to cout and increment to next character
+        _    _4:PCC = (_1:STATUS, Z, sendChar)   ;if not null then send it
+        _    _4:PCS = (_1:STATUS, Z, clrLPCNT)   ;else exit if null char
+        _    _4:PCS = (_4:LPCNT0, 16, loopInner) ;next  
+        _    _4:PCC = (_1:0, 0, sendLoop)        ;branch always to sendLoop 
             
 clrLPCNT:    _   
-       _     _4|PC <- _4|*SP++[4]                 ;restore PC (return)
+       _     _4:PC = _4:*SP++[4]                 ;restore PC (return)
 
 sendTekMsg:  _
-       _     _4|*SP--[4] <- _4|PC_COPY            ;save return address
+       _     _4:*SP--[4] = _4:PC_COPY            ;save return address
               
-       _     _4|AR0 <- _4|#{tekPlotMode | 0x80000000}   ;switch to Tektronix mode    
-       _     _4|PCC <- (_1|0, 0, sendMessage) 
+       _     _4:AR0 = _4:#{tekPlotMode | 0x80000000}   ;switch to Tektronix mode    
+       _     _4:PCC = (_1:0, 0, sendMessage) 
        _ 
        
 sendTekLoop: _
-       _     _4|AR1 <- _4|#outBuf               
-       _     _8|outBuf <- _8|*AR6++[1]          
-       _     _2|LPCNT0 <- _2|#8                 
+       _     _4:AR1 = _4:#outBuf               
+       _     _8:outBuf = _8:*AR6++[1]          
+       _     _2:LPCNT0 = _2:#8                 
 loopTekInner: _ 
-       _     _1|compare <- (_1|*AR1[0], _1|#0x00)    ;see if current char is a null character 
+       _     _1:compare = (_1:*AR1[0], _1:#0x00)    ;see if current char is a null character 
        _
-       _     _1|cout <- _1|*AR1++[1]                 ;copy first char in buffer to cout and increment to next character
-       _     _4|PCC <- (_1|STATUS, Z, sendChar)      ;if not null then send it
-       _     _4|PCS <- (_1|STATUS, Z, clrTekLPCNT)   ;else exit if null char
-       _     _4|PCS <- (_4|LPCNT0, 16, loopTekInner) ;next  
-       _     _4|PCC <- (_1|0, 0, sendTekLoop)        ;branch always to sendLoop 
+       _     _1:cout = _1:*AR1++[1]                 ;copy first char in buffer to cout and increment to next character
+       _     _4:PCC = (_1:STATUS, Z, sendChar)      ;if not null then send it
+       _     _4:PCS = (_1:STATUS, Z, clrTekLPCNT)   ;else exit if null char
+       _     _4:PCS = (_4:LPCNT0, 16, loopTekInner) ;next  
+       _     _4:PCC = (_1:0, 0, sendTekLoop)        ;branch always to sendLoop 
             
 clrTekLPCNT: _  
-       _     _4|AR0 <- _4|#{tekNorm | 0x80000000}    ;switch back to Normal (target) display buffer
-       _     _4|PCC <- (_1|0, 0, sendMessage)        ;branch always to sendMessage
+       _     _4:AR0 = _4:#{tekNorm | 0x80000000}    ;switch back to Normal (target) display buffer
+       _     _4:PCC = (_1:0, 0, sendMessage)        ;branch always to sendMessage
        _
-       _     _4|PC <- _4|*SP++[4]                    ;restore PC (return)
+       _     _4:PC = _4:*SP++[4]                    ;restore PC (return)
             
             
 sendChar:    _
-       _     _4|*SP--[4] <- _4|PC_COPY                 
+       _     _4:*SP--[4] = _4:PC_COPY                 
 waitTDRE:    _ 
-       _     _4|PCC <- (_1|artStat, TDRE, waitTDRE)  ;wait for TDRE to become 1 if not already 1
+       _     _4:PCC = (_1:artStat, TDRE, waitTDRE)  ;wait for TDRE to become 1 if not already 1
        _
-       _     _4|AR2 <- _4|#0
-       _     _2|REPEAT <- _2|#108                    ;roughly 1 bit time
-       _     _1|*AR2++[0] <- _1|#0                   ;delay specified amount to give time
+       _     _4:AR2 = _4:#0
+       _     _2:REPEAT = _2:#108                    ;roughly 1 bit time
+       _     _1:*AR2++[0] = _1:#0                   ;delay specified amount to give time
                                                     ;for TEK rendering to do its thing
        
-       _     _1|artTdr <- _1|cout                    ;send it
+       _     _1:artTdr = _1:cout                    ;send it
        
-       _     _4|PC <- _4|*SP++[4]                    ;restore PC (return)
+       _     _4:PC = _4:*SP++[4]                    ;restore PC (return)
 
 getChar:     _
-       _     _4|*SP--[4] <- _4|PC_COPY                
+       _     _4:*SP--[4] = _4:PC_COPY                
 waitRDRF:    _
-       _     _1|LEDreg <- _1|buttons                 ;capture buttons and write them to LEDs
+       _     _1:LEDreg = _1:buttons                 ;capture buttons and write them to LEDs
 
-       _     _4|PCC <- (_1|artStat, RDRF, waitRDRF)
-       _     _1|inChar <- _1|artRdr                
-       _     _4|PC <- _4|*SP++[4]                 
+       _     _4:PCC = (_1:artStat, RDRF, waitRDRF)
+       _     _1:inChar = _1:artRdr                
+       _     _4:PC = _4:*SP++[4]                 
        _
        _
        _
