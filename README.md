@@ -1,6 +1,17 @@
 ## CustomASM Support for SYMPL Universal Floating-Point ISA
 SYMPL ISA Rule table for open-source CustomASM cross-assembler.
 
+
+(August 31, 2021) The repository has been updated to include source with ":" and "=" characters in the target ISA syntax.  However, to assemble it, you will first need to clone the CustomASM repository and add two lines of code to the CustomASM file: source/syntax/token.rs within the "is_allowed_pattern_token" function by including the following lines among the others:
+```
+	self == TokenKind::Equal ||          //added by J.D.H. 8/31/2021
+	self == TokenKind::Colon ||          //added by J.D.H. 8/31/2021
+  
+```  
+Then you will need to install Rust and re-compile the modified code.  Once you modify the above file, run "cargo build" command to a create new customASM executable, which will be located in the your rust target/debug/ folder.  
+
+Assuming the official CustomASM repository eventually will incorporate the above modification to allow use of ":" and "=" in the target ISA syntax, I will publish a notice to that effect so you won't have to build your own version of it.
+
 (August 30, 2021) This repository contains a Rule table that can be used with the open-source CustomASM rule-based cross-assembler to assemble SYMPL ISA assembly language source files whose binary output can be uploaded to the ULX3S FPGA board.  Also available at this repository is a version of the Blue Tooth version of the SYMPL IEEE 754-2019 demo that has been modified to conform to the current CustomASM syntax.  The source and assembled files are:
 ```
 SYMPL_demo1.bat               //MSDOS batch file for executing CustomASM to generate listing file and executable binary file
