@@ -9,7 +9,7 @@
 
 ;(this version uses ":" and "=" in the ISA syntax
                   
-#include "SYMPLrules_colon.tbl"
+#include "SYMPLrules.tbl"
             
 timer            =  0x7FEC   ;32-bit timer current count value read-only --always cleared to 0 when timerCmpr is written to
 timerCmpr        =  0x7FEC   ;32-bit timer compare register (at same address) write-only
