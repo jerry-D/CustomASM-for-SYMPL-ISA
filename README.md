@@ -14,28 +14,6 @@ To download your free copy of the open-source CustomASM, visit:
 
 https://github.com/hlorenzi/customasm
 
-Upon first inspection of the SYMPL ISA demo source file, you will notice that the SYMPL ISA syntax was modified to conform to the limitations of the CustomASM syntax.  Namely, CustomASM currently does not permit the use of ":" and "=" characters in the target ISA syntax.  To overcome this limitation for the time being, in the demo source code, "|" is substitued for ":" and "<-" is substitued for "=".
-
-EXAMPLE Original SYMPL ISA Syntax (note that the value to the left of the ":" is the size specifier for dest, srcA and srcB)
-```
-       _     _1:compare = (_1:*AR1[0], _1:#0x00)    ;see if current char is a null character 
-       _     _1:cout = _1:*AR1++[1]                 ;copy first char in buffer to cout and increment to next character
-
-       _     _1:LEDreg = _1:buttons                 ;capture buttons and write them to LEDs
-```
-EXAMPLE SYMPL ISA Syntax Adapted for use with CustomASM
-```
-       _     _1|compare <- (_1|*AR1[0], _1|#0x00)    ;see if current char is a null character 
-       _     _1|cout <- _1|*AR1++[1]                 ;copy first char in buffer to cout and increment to next character
-
-       _     _1|LEDreg <- _1|buttons                 ;capture buttons and write them to LEDs
-```
-Also included in this repository are a version of the Rules table and demo source file that uses the original SYMPL ISA ":" and "=" characters in the syntax in the event that the author of CustomASM decides to update his assembler to support them.  The files are:
-```
-SYMPLrules_colon.tbl
-SYMPL_demo1_BT_colon.asm
-```
-In the meantime, I will attempt to contact the author of CustomASM and see if I can convince him to permit use of ":" and "=" in the user ISA syntax.
 For more information on the SYMPL Universal Floating-Point ISA, refer to the following documents:
 
 https://github.com/jerry-D/SYMPL_IEEE754-2019_ISA/blob/main/UFP_ISA.pdf
