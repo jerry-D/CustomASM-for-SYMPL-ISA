@@ -2,6 +2,31 @@
 SYMPL ISA Rule table for open-source CustomASM cross-assembler.
 
 
+(July 19, 2023) The SYMPLrules.tbl file has been updated as Version 1.02 and believed to now be error-free.  Also, the assembler output modes are explained here.  There are now four output modes that may be specified in the assembler batch file:
+
+annotatedhex -- used for generating traditional object listing comprising lables, Program Counter [address] value, 64-bit hex value for instruction/data field, and source text, but does not include comment text
+
+annotated    -- same as annotatedhex, except the output does not include the 64-bit hex value for the instruction field in the listing output.  This is useful for on-chip, source level debuggers
+
+binary       -- executable binary image
+
+hexdump      -- contains only the contiguous 64-bit values in ASCII hex, which is useful for initializing FPGA RAM blocks used for target program memory during Verilog simulation and synthesis stages.
+
+Usage examples:
+```
+:: use the following command to output a object listing file
+customasm -f annotatedhex -o SYMPL_demo1_BT_custom.obj SYMPL_demo1_BT_custom.asm
+ 
+:: use the following command to output a executable binary file that can be uploaded to the target
+customasm -f binary -o SYMPL_demo1_BT_custom.bin SYMPL_demo1_BT_custom.asm
+
+:: use the following command to output a source-only listing file that can be uploaded to the debugger
+customasm -f annotated -o SYMPL_demo1_BT_custom.src SYMPL_demo1_BT_custom.asm
+ 
+:: use the following command to produce a 64-bit wide hex file that can be used by Verilog $readmemh system task for initializing FPGA ROM
+customasm -f hexdump -o SYMPL_demo1_BT_custom.ini SYMPL_demo1_BT_custom.asm
+
+```
 (August 31, 2021) The repository has been updated to include source with ":" and "=" characters in the target ISA syntax.  However, to assemble it, you will first need to clone the CustomASM repository and add two lines of code to the CustomASM file: source/syntax/token.rs within the "is_allowed_pattern_token" function by including the following lines among the others:
 ```
 	self == TokenKind::Equal ||          //added by J.D.H. 8/31/2021
