@@ -27,7 +27,7 @@ customasm -f annotated -o SYMPL_demo1_BT_custom.src SYMPL_demo1_BT_custom.asm
 customasm -f hexdump -o SYMPL_demo1_BT_custom.ini SYMPL_demo1_BT_custom.asm
 
 ```
-In addition to the updated SYMPLrules.tbl file, the modified CUSTOMASM source files and copy of the pertinent Apache license have also been added to this repository.
+In addition to the updated SYMPLrules.tbl file, the modified CUSTOMASM source files, customasm.exe executable, and copy of the pertinent Apache license have also been added to this repository.
 
 (August 31, 2021) The repository has been updated to include source with ":" and "=" characters in the target ISA syntax.  However, to assemble it, you will first need to clone the CustomASM repository and add two lines of code to the CustomASM file: source/syntax/token.rs within the "is_allowed_pattern_token" function by including the following lines among the others:
 ```
